@@ -1,0 +1,41 @@
+QUERY 1:
+SELECT * FROM albums where start_day >= ? AND end_day <= ?;
+
+QUERY 2:
+SELECT * FROM songs_view WHERE musician_name = ? AND song_record_date >= ? AND song_record_date < ?;
+
+QUERY 3:
+SELECT DISTINCT(album_id) FROM songs_view WHERE musician_name = ? AND (end_day > ? AND start_day < ?);
+
+QUERY 4:
+select instruments.instrument_type from instruments where instruments.instrument_id = (SELECT instrument_id FROM instruments_song GROUP BY instrument_id ORDER BY COUNT(*) DESC LIMIT 1);
+
+QUERY 5:
+select instrument_type from instruments where instruments.instrument_id = any(select instument_id from album_instruments   where  album_id =(select id from  albums where album_name = ? ));
+
+QUERY 6:
+select producer_name from Producers where producer_id =(select producer_id from(select producer_id ,count(producer_id) as 'count' from (select producer_id from Albums where start_day and end_day between ? and ?) as M group by producer_id order by count DESC limit 1) as T);
+
+QUERY 7:
+select instrument_creator from instruments where instrument_id = (SELECT instrument_id FROM instruments_song GROUP BY instrument_id ORDER BY COUNT(*) DESC LIMIT    1);
+
+QUERY 8:
+SELECT COUNT(distinct musician_id) AS allm FROM musicians;
+
+QUERY 10:
+SELECT song_genre FROM songs GROUP BY song_genre ORDER BY COUNT(*) DESC LIMIT 1; 
+
+QUERY 11:
+select technician_name from technicians where technician_id = (select technician_id from(select * from songs where song_record_date >= ? and ?)  as o group by technician_id ORDER BY COUNT(*) DESC LIMIT    1);
+
+QUERY 12:
+SELECT album_name FROM albums ORDER BY end_day;
+
+QUERY 13:
+SELECT COUNT(album_id) AS albums, song_name FROM songs_view GROUP BY song_id HAVING albums > 1;
+
+QUERY 14:
+SELECT DISTINCT (technician_name), album_id, COUNT(song_id) AS songs_counter, songs_count FROM songs_view GROUP BY album_id, technician_name HAVING COUNT(song_id) = songs_count;
+
+QUERY 15:
+SELECT COUNT(song_genre) AS genres, musician_name FROM songs_view GROUP BY musician_id ORDER BY genres DESC LIMIT 1 ;
